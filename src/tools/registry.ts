@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import * as appdbTools from "./domo-appdb/index.js";
 import * as datasetTools from "./domo-dataset/index.js";
+import * as exportTools from "./domo-export/index.js";
 
 interface ToolDefinition {
     name: string;
@@ -18,6 +19,7 @@ const isToolDefinition = (value: unknown): value is ToolDefinition =>
 const tools = ([
     ...Object.values(appdbTools),
     ...Object.values(datasetTools),
+    ...Object.values(exportTools)
 ] as unknown[]).filter(isToolDefinition);
 
 export const registerAll = (server: McpServer) => {
