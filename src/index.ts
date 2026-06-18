@@ -5,14 +5,19 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 registerAll(server);
 
+let transport: StreamableHTTPServerTransport | null = null;
+
+async function getTransport() {
+    if (!transport) {
+        transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+        });
+        await server.connect(transport);
+    }
+    return transport;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-    const { server } = await import("./server.js");
-
-    const transport = new StreamableHTTPServerTransport({
-        sessionIdGenerator: undefined,
-    });
-
-    await server.connect(transport);
-    await transport.handleRequest(req, res, req.body);
-    await server.close();
+    const t = await getTransport();
+    await t.handleRequest(req, res, req.body);
 }
