@@ -7,9 +7,11 @@ import { InMemoryEventStore } from "@modelcontextprotocol/sdk/examples/shared/in
 registerAll(server);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+    const { server } = await import("./server.js");
+    registerAll(server);
+
     const transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
-        eventStore: new InMemoryEventStore(),
     });
 
     await server.connect(transport);
