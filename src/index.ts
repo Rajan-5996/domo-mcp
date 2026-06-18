@@ -1,23 +1,16 @@
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { server } from "./server.js";
 import { registerAll } from "./tools/registry.js";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 registerAll(server);
 
-let transport: StreamableHTTPServerTransport | null = null;
-
-async function getTransport() {
-    if (!transport) {
-        transport = new StreamableHTTPServerTransport({
-            sessionIdGenerator: undefined,
-        });
-        await server.connect(transport);
+async function main() {
+    try {
+        await server.connect(new StdioServerTransport());
+    } catch (error) {
+        console.error("Error starting MCP server:", error);
+        process.exit(1);
     }
-    return transport;
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-    const t = await getTransport();
-    await t.handleRequest(req, res, req.body);
-}
+main();
