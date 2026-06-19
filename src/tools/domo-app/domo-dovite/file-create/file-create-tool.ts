@@ -30,29 +30,28 @@ export const createFileTool = {
      * @agent
      *
      * PURPOSE:
-     *   Create files inside a project.
+     *   Create files inside a Domo React project.
+     *   Can be called multiple times to add components, hooks, services, configs.
      *
-     * COMMON USE CASES:
-     *   - React components
-     *   - Hooks
-     *   - Services
-     *   - Utilities
-     *   - Configuration files
-     *   - Documentation
+     * APP CREATION CHAIN — STEP 4 of 9:
      *
-     * EXAMPLES:
-     *
-     * create_file({
-     *   file_path: "src/components/TodoCard.tsx"
-     * })
-     *
-     * create_file({
-     *   file_path: "src/hooks/useTodos.ts"
-     * })
-     *
-     * create_file({
-     *   file_path: "README.md"
-     * })
+     *   [1] directory_lookup      — find the target folder path
+     *        ↓
+     *   [2] change_directory      — navigate into the chosen folder
+     *        ↓
+     *   [3] create_react_app      — scaffold the React TypeScript app
+     *        ↓
+     *   [4] create_file           ← YOU ARE HERE (repeat for each file needed)
+     *        ↓ (all files created — now configure the app manifest)
+     *   [5] edit_manifest         — configure datasetsMapping, collections, etc.
+     *        ↓
+     *   [6] domo_data_api         — wire a Domo dataset + typed API client
+     *        ↓
+     *   [7] domo_appdb            — set up AppDB datastore + collections
+     *        ↓
+     *   [8] domo_workflow         — integrate a Domo Workflow trigger
+     *        ↓
+     *   [9] domo_publish          — build + publish the app to Domo
      *
      * BEHAVIOR:
      *   - Automatically creates parent directories.
@@ -62,11 +61,9 @@ export const createFileTool = {
      * IMPORTANT:
      *   Path is resolved relative to the current working directory.
      *
-     * WORKFLOW:
-     *
-     *   create_react_app
-     *       ↓
-     *   create_file
+     * WHEN TO SUGGEST NEXT TOOL:
+     *   After all needed files are created, call `edit_manifest` to wire
+     *   datasets, AppDB collections, or workflow mappings into the app.
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         const result = await createFile(

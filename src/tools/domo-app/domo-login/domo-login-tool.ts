@@ -18,14 +18,35 @@ export const domoLoginTool = {
     },
     /**
      * @agent
-     *   COLLECT FROM USER BEFORE INVOKING:
-     *   - `instance_name` — ask "Which Domo instance should we log into? (e.g., company.domo.com)"
-     *   - `dev_token`     — ask "Please provide your Domo Developer Access Token.
-     *                        You can generate one at: Domo → Admin Settings → Authentication → Access Tokens."
      *
-     *   CREDENTIALS (check cache/memory first):
+     * PURPOSE:
+     *   Authenticate with a Domo instance using a Developer Access Token.
+     *   Call this FIRST whenever API calls to Domo are needed.
+     *
+     * APP CREATION CHAIN — STEP 0 (Prerequisites):
+     *
+     *   [0] domo_login            ← YOU ARE HERE (authenticate first)
+     *        ↓ (token validated — now proceed with app creation)
+     *   [1] directory_lookup      — find the target folder path
+     *        ↓
+     *   [2] change_directory      — navigate into the chosen folder
+     *        ↓
+     *   [3] create_react_app      — scaffold the React TypeScript app
+     *        ↓  ...
+     *   [9] domo_publish          — build + publish the app to Domo
+     *
+     * COLLECT FROM USER BEFORE INVOKING:
+     *   - `instance_name` — ask "Which Domo instance? (e.g., company.domo.com)"
+     *   - `dev_token`     — ask "Please provide your Domo Developer Access Token."
+     *                        You can generate one at: Domo → Admin Settings → Authentication → Access Tokens.
+     *
+     * CREDENTIALS (check cache/memory first):
      *   - If `dev_token` was provided earlier in this session, reuse it — don't ask again.
      *   - Never log, store, or echo the token value back to the user.
+     *
+     * WHEN TO SUGGEST NEXT TOOL:
+     *   After login succeeds, proceed with `directory_lookup` to find the
+     *   target folder for the project, or directly to whatever task the user requested.
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         const result = await domoLogin({

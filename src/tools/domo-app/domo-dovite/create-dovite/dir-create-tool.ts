@@ -26,6 +26,26 @@ export const createReactAppTool = {
      * PURPOSE:
      *   Create a React TypeScript application using Dovite.
      *
+     * APP CREATION CHAIN — STEP 3 of 9:
+     *
+     *   [1] directory_lookup      — find the target folder path
+     *        ↓
+     *   [2] change_directory      — navigate into the chosen folder
+     *        ↓ (cwd must be set before calling this tool)
+     *   [3] create_react_app      ← YOU ARE HERE
+     *        ↓ (app scaffolded — use create_file to add more source files)
+     *   [4] create_file           — add source files (components, hooks, etc.)
+     *        ↓
+     *   [5] edit_manifest         — configure datasetsMapping, collections, etc.
+     *        ↓
+     *   [6] domo_data_api         — wire a Domo dataset + typed API client
+     *        ↓
+     *   [7] domo_appdb            — set up AppDB datastore + collections
+     *        ↓
+     *   [8] domo_workflow         — integrate a Domo Workflow trigger
+     *        ↓
+     *   [9] domo_publish          — build + publish the app to Domo
+     *
      * REQUIRED INPUT:
      *   - project_name
      *
@@ -34,34 +54,14 @@ export const createReactAppTool = {
      *   - Ensure change_directory has been used.
      *   - The current working directory must be the desired parent folder.
      *
-     * USER INTERACTION:
-     *   Ask ONLY for the project name.
-     *
-     *   Example:
-     *     "todo-app"
-     *     "crm-dashboard"
-     *     "my-frontend"
-     *
-     * AUTOMATIC DECISIONS:
-     *   - Always use React TypeScript.
-     *   - Automatically answer all non-project-name prompts.
-     *   - Never ask the user which template to use.
-     *
-     * SUCCESS:
-     *   Returns the created project path.
+     * WHEN TO SUGGEST NEXT TOOL:
+     *   After the app is scaffolded, call `create_file` to add any additional
+     *   source files (components, hooks, utilities). When files are ready,
+     *   call `edit_manifest` to configure the app's datasetsMapping.
      *
      * FAILURE:
      *   If npx is not installed:
-     *     Inform the user:
-     *     "npx is not installed. Please install npx and try again."
-     *
-     * WORKFLOW:
-     *
-     *   directory_lookup
-     *       ↓
-     *   change_directory
-     *       ↓
-     *   create_react_app
+     *     Inform the user: "npx is not installed. Please install npx and try again."
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         const result = await createReactApp(args.project_name);

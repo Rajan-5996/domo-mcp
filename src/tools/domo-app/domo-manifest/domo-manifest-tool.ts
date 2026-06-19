@@ -83,18 +83,46 @@ export const manifestEditTool = {
     },
     /**
      * @agent
-     *   COLLECT FROM USER BEFORE INVOKING:
+     *
+     * APP CREATION CHAIN — STEP 5 of 9:
+     *
+     *   [1] directory_lookup      — find the target folder path
+     *        ↓
+     *   [2] change_directory      — navigate into the chosen folder
+     *        ↓
+     *   [3] create_react_app      — scaffold the React TypeScript app
+     *        ↓
+     *   [4] create_file           — add source files (components, hooks, etc.)
+     *        ↓
+     *   [5] edit_manifest         ← YOU ARE HERE
+     *        ↓ (manifest updated — now wire in your data sources)
+     *   [6] domo_data_api         — wire a Domo dataset + typed API client
+     *        ↓
+     *   [7] domo_appdb            — set up AppDB datastore + collections
+     *        ↓
+     *   [8] domo_workflow         — integrate a Domo Workflow trigger
+     *        ↓
+     *   [9] domo_publish          — build + publish the app to Domo
+     *
+     * COLLECT FROM USER BEFORE INVOKING:
      *   - `root_dir`         — the app project root, if not already known from context
      *   - whichever manifest fields the user actually wants changed; don't ask about
      *     fields they haven't mentioned, just omit them so they're left untouched
      *
-     *   NOTES:
+     * NOTES:
      *   - For datasetsMapping, ask for the DataSet's URL or ID if the user only names it,
      *     since `dataSetId` is required and isn't guessable.
      *   - collections/workflowMapping/packageMapping all require a `proxyId` in the
      *     manifest — if the user is adding one of these for the first time and no
-     *     proxyId exists yet, flag that it'll be needed (see manifest skill: "Getting a proxyId").
+     *     proxyId exists yet, flag that it'll be needed.
      *   - Never invent a dataSetId, alias, or proxyId — ask if missing.
+     *
+     * WHEN TO SUGGEST NEXT TOOL:
+     *   After manifest is saved:
+     *   → If the user wants to wire a dataset → call `domo_data_api`
+     *   → If the user wants AppDB collections → call `domo_appdb`
+     *   → If the user wants a Workflow trigger → call `domo_workflow`
+     *   → If ready to deploy                  → call `domo_publish`
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         const { root_dir, replace_arrays, ...updates } = args;

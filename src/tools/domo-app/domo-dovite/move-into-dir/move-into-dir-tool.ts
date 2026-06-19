@@ -26,29 +26,29 @@ export const changeDirectoryTool = {
      *   Navigate into a directory before performing file operations
      *   or running project creation commands.
      *
-     * USE AFTER:
-     *   - directory_lookup
+     * APP CREATION CHAIN — STEP 2 of 9:
      *
-     * EXAMPLE FLOW:
+     *   [1] directory_lookup      — find the target folder path
+     *        ↓ (use the returned path here)
+     *   [2] change_directory      ← YOU ARE HERE
+     *        ↓ (cwd is now set — all subsequent tools run here)
+     *   [3] create_react_app      — scaffold the React TypeScript app
+     *        ↓
+     *   [4] create_file           — add source files (components, hooks, etc.)
+     *        ↓
+     *   [5] edit_manifest         — configure datasetsMapping, collections, etc.
+     *        ↓
+     *   [6] domo_data_api         — wire a Domo dataset + typed API client
+     *        ↓
+     *   [7] domo_appdb            — set up AppDB datastore + collections
+     *        ↓
+     *   [8] domo_workflow         — integrate a Domo Workflow trigger
+     *        ↓
+     *   [9] domo_publish          — build + publish the app to Domo
      *
-     *   directory_lookup("Desktop")
-     *   → /home/user/Desktop
-     *
-     *   change_directory("/home/user/Desktop")
-     *
-     *   create_react_app("todo-app")
-     *
-     * REQUIREMENTS:
-     *   - The path must exist.
-     *   - The path must be a directory.
-     *
-     * IMPORTANT:
-     *   This tool changes the current working directory
-     *   for the entire MCP process.
-     *
-     * AFTER SUCCESS:
-     *   Future tools should use process.cwd()
-     *   as their execution directory.
+     * WHEN TO SUGGEST NEXT TOOL:
+     *   After success, immediately call `create_react_app` with the project name.
+     *   Do not ask the user for confirmation.
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         const result = await changeDirectory(args.path);
