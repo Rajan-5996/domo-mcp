@@ -72,6 +72,13 @@ cd <project-folder> && yarn upload
   1. Edit `src/index.css` and delete the line `@import "@fontsource-variable/geist";`
   2. Retry: `yarn upload`
 
+- **If `yarn upload` fails (e.g., if the upload script is missing or fails)**:
+  Run the build command first, navigate into the `dist` directory, and call `domo publish`:
+
+```bash
+yarn run build && cd dist && domo publish
+```
+
 ---
 
 ## Step 4 — proxyId Follow-Up

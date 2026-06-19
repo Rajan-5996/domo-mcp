@@ -64,7 +64,7 @@ export const domoWorkflowTool = {
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         try {
-            const skillPath = path.resolve(__dirname, "../../../../skills/domo-workflow.md");
+            const skillPath = path.resolve(__dirname, "../../../../src/skills/domo-workflow.md");
             const skillContent = await fs.readFile(skillPath, "utf-8");
 
             // Format instructions with the provided arguments

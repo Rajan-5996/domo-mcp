@@ -57,7 +57,7 @@ export const domoDataApiTool = {
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         try {
-            const skillPath = path.resolve(__dirname, "../../../../skills/domo-dataset.md");
+            const skillPath = path.resolve(__dirname, "../../../../src/skills/domo-dataset.md");
             const skillContent = await fs.readFile(skillPath, "utf-8");
 
             let instructions = `You are executing the Domo Dataset Integration Skill. Please follow the instructions in the markdown below to perform the integration.\n\n`;

@@ -58,7 +58,7 @@ export const domoPublishTool = {
      */
     handler: async (args: z.infer<typeof inputSchema>) => {
         try {
-            const skillPath = path.resolve(__dirname, "../../../../skills/domo-publish.md");
+            const skillPath = path.resolve(__dirname, "../../../../src/skills/domo-publish.md");
             const skillContent = await fs.readFile(skillPath, "utf-8");
 
             // Format instructions with the provided arguments
