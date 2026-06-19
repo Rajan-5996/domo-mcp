@@ -16,7 +16,7 @@ export const createReactAppTool = {
     definition: {
         title: "Create React Application",
         description:
-            "Creates a new React TypeScript application using Dovite in the current working directory.",
+            "Creates a new React TypeScript application using Dovite. using npx",
         inputSchema,
     },
 
@@ -51,9 +51,9 @@ export const createReactAppTool = {
      *   Returns the created project path.
      *
      * FAILURE:
-     *   If Yarn is not installed:
+     *   If npx is not installed:
      *     Inform the user:
-     *     "Yarn is not installed. Please install Yarn and try again."
+     *     "npx is not installed. Please install npx and try again."
      *
      * WORKFLOW:
      *

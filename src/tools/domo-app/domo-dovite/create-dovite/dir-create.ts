@@ -15,7 +15,7 @@ export interface CreateReactAppResult {
  *
  * Requirements:
  * - Current working directory must already be set.
- * - Yarn must be installed.
+ * - npx must be installed.
  *
  * The tool automatically:
  * - Chooses React TypeScript template
@@ -32,29 +32,30 @@ export async function createReactApp(
         let projectNameSubmitted = false;
         let templateSubmitted = false;
 
-        const yarnCheck = spawn("yarn", ["--version"]);
+        const npxCheck = spawn("npx", ["--version"], { shell: true });
 
-        yarnCheck.on("error", () => {
+        npxCheck.on("error", () => {
             resolve({
                 success: false,
                 error:
-                    "Yarn is not installed. Please install Yarn and try again.",
+                    "npx is not installed. Please install npx and try again.",
             });
         });
 
-        yarnCheck.on("close", (code) => {
+        npxCheck.on("close", (code) => {
             if (code !== 0) {
                 resolve({
                     success: false,
                     error:
-                        "Yarn is not installed. Please install Yarn and try again.",
+                        "npx is not installed. Please install npx and try again.",
                 });
                 return;
             }
 
-            const child = spawn("yarn", ["create", "dovite"], {
+            const child = spawn("npx", ["create-dovite"], {
                 cwd: process.cwd(),
                 stdio: ["pipe", "pipe", "pipe"],
+                shell: true,
             });
 
             child.stdout.on("data", (data) => {
