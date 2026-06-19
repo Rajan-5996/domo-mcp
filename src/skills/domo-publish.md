@@ -10,6 +10,16 @@ allowed-tools: Bash, Read, Edit
 
 Once Step 1's proxyId question is answered (or skipped because it doesn't exist), run Steps 2–4 to completion without asking for permission — never ask "should I build now?", "can I run yarn upload?", "is it ok to edit the manifest?", etc. Only stop for a hard blocker (build failure, upload error you can't auto-resolve).
 
+## Step 0 — Ensure Thumbnail
+
+Make sure `thumbnail.png` exists in the app's `public/` directory (or base directory if there is no `public/` directory). If it does not exist, copy the default thumbnail from the Domo MCP helper folder to the `public/` directory (or base directory):
+
+```bash
+cp "C:\Users\RajanNaveenM\Documents\mcp\domo\src\helpers\thumbnail.png" "public/thumbnail.png" 2>/dev/null || cp "C:\Users\RajanNaveenM\Documents\mcp\domo\src\helpers\thumbnail.png" "thumbnail.png"
+```
+
+---
+
 ## Step 1 — Check proxyId
 
 Locate and read the manifest:
